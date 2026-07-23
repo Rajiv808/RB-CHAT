@@ -11,30 +11,37 @@ import messageRoutes from "./routes/message.routes.js";
 
 const app = express();
 
-// ===================== ALLOWED ORIGINS =====================
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://rbchat-jelp.vercel.app",
-  "https://rb-chat-gw6a.vercel.app",
-  process.env.CLIENT_URL,
-].filter(Boolean);
-
 // ===================== CORS =====================
 
 app.use(
   cors({
     origin: (origin, callback) => {
+      console.log("🌐 Incoming Origin:", origin);
+
       // Allow Postman, Thunder Client, server-to-server requests
       if (!origin) {
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      // Local development
+      if (origin === "http://localhost:5173") {
         return callback(null, true);
       }
 
-      console.log("❌ Blocked by CORS:", origin);
+      // Any Vercel deployment
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      // Optional custom frontend URL
+      if (
+        process.env.CLIENT_URL &&
+        origin === process.env.CLIENT_URL
+      ) {
+        return callback(null, true);
+      }
+
+      console.log("❌ Blocked Origin:", origin);
 
       return callback(new Error("Not allowed by CORS"));
     },
@@ -43,11 +50,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-// Handle preflight requests
-app.options("*", cors());
-
-// ===================== BODY PARSERS =====================
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -63,9 +65,9 @@ app.use((req, res, next) => {
 // ===================== HOME =====================
 
 app.get("/", (req, res) => {
-  res.status(200).json({
+  res.json({
     success: true,
-    message: "Welcome to RB Chat API 🚀",
+    message: "RB Chat API Running 🚀",
   });
 });
 
@@ -88,7 +90,7 @@ app.use((req, res) => {
 // ===================== ERROR HANDLER =====================
 
 app.use((err, req, res, next) => {
-  console.error("❌ ERROR:", err.message);
+  console.error("❌ ERROR:", err);
 
   res.status(err.status || 500).json({
     success: false,
