@@ -2,7 +2,7 @@ import { Readable } from "stream";
 import cloudinary from "../config/cloudinary.js";
 
 import Message from "../models/Message.js";
-import Chat from "../models/Chat.js";
+import Chat from "../models/chat.js";
 
 // ======================
 // Send Message
