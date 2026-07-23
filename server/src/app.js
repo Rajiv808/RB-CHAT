@@ -11,28 +11,43 @@ import messageRoutes from "./routes/message.routes.js";
 
 const app = express();
 
-// ===================== MIDDLEWARE =====================
+// ===================== ALLOWED ORIGINS =====================
 
 const allowedOrigins = [
   "http://localhost:5173",
   "https://rbchat-jelp.vercel.app",
-];
+  "https://rb-chat-gw6a.vercel.app",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
+// ===================== CORS =====================
 
 app.use(
   cors({
-    origin(origin, callback) {
-      // Allow requests with no origin (Postman, Thunder Client, etc.)
-      if (!origin) return callback(null, true);
+    origin: (origin, callback) => {
+      // Allow Postman, Thunder Client, server-to-server requests
+      if (!origin) {
+        return callback(null, true);
+      }
 
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
+      console.log("❌ Blocked by CORS:", origin);
+
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Handle preflight requests
+app.options("*", cors());
+
+// ===================== BODY PARSERS =====================
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -45,16 +60,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// ===================== HOME ROUTE =====================
+// ===================== HOME =====================
 
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Welcome to Chat API 🚀",
+    message: "Welcome to RB Chat API 🚀",
   });
 });
 
-// ===================== API ROUTES =====================
+// ===================== ROUTES =====================
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
@@ -73,7 +88,7 @@ app.use((req, res) => {
 // ===================== ERROR HANDLER =====================
 
 app.use((err, req, res, next) => {
-  console.error("❌ ERROR:", err);
+  console.error("❌ ERROR:", err.message);
 
   res.status(err.status || 500).json({
     success: false,
