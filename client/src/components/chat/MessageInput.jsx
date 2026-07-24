@@ -29,7 +29,6 @@ const MessageInput = () => {
 
   useEffect(() => {
     if (textareaRef.current) {
-      // Reset height to calculate true scroll height when clearing text
       if (!message) {
         textareaRef.current.style.height = "auto";
       }
@@ -49,12 +48,11 @@ const MessageInput = () => {
     const value = e.target.value;
     setMessage(value);
 
-    // Dynamic auto-expansion up to 220px height
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${Math.min(
         textareaRef.current.scrollHeight,
-        220
+        160
       )}px`;
     }
 
@@ -96,7 +94,6 @@ const MessageInput = () => {
 
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
-        // Re-focus on mobile screens so virtual keyboard stays active
         if (window.innerWidth < 768) {
           textareaRef.current.focus();
         }
@@ -109,10 +106,8 @@ const MessageInput = () => {
   };
 
   const handleKeyDown = (e) => {
-    // Detect if keypress is from a mobile IME / Virtual Keyboard composition
     if (e.isComposing || e.keyCode === 229) return;
 
-    // Only send on Enter on Desktop. On mobile (<768px), Enter inserts line breaks natively.
     if (e.key === "Enter" && !e.shiftKey && window.innerWidth >= 768) {
       e.preventDefault();
       handleSend();
@@ -120,11 +115,11 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="border-t border-zinc-200/80 bg-[#F8F9FA]/90 backdrop-blur-md p-2.5 sm:p-4 md:p-5 shrink-0 relative z-30">
+    <div className="w-full border-t border-slate-800/80 bg-[#0f172a]/95 backdrop-blur-xl p-2.5 sm:p-3.5 shrink-0 relative z-30 pb-[max(0.625rem,env(safe-area-inset-bottom))]">
       
       {/* Quick Emoji Popover */}
       {showEmojiPicker && (
-        <div className="absolute bottom-full left-2 sm:left-4 mb-2 sm:mb-3 p-1.5 sm:p-2 bg-white/95 border border-zinc-200 rounded-2xl shadow-xl backdrop-blur-xl flex items-center gap-1 sm:gap-1.5 z-50 max-w-[calc(100vw-1rem)] overflow-x-auto">
+        <div className="absolute bottom-full left-2 sm:left-4 mb-2 p-1.5 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl backdrop-blur-xl flex items-center gap-1 z-50 max-w-[calc(100vw-1rem)] overflow-x-auto">
           {QUICK_EMOJIS.map((emoji) => (
             <button
               key={emoji}
@@ -133,7 +128,7 @@ const MessageInput = () => {
                 setMessage((prev) => prev + emoji);
                 textareaRef.current?.focus();
               }}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl hover:bg-zinc-100 flex items-center justify-center text-lg sm:text-xl active:scale-125 transition-transform shrink-0 cursor-pointer"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl hover:bg-slate-800 flex items-center justify-center text-lg sm:text-xl active:scale-125 transition-transform shrink-0 cursor-pointer"
             >
               {emoji}
             </button>
@@ -141,7 +136,7 @@ const MessageInput = () => {
           <button
             type="button"
             onClick={() => setShowEmojiPicker(false)}
-            className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center ml-0.5 sm:ml-1 shrink-0 cursor-pointer"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200 flex items-center justify-center shrink-0 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -165,12 +160,12 @@ const MessageInput = () => {
 
       {/* Image Preview Block */}
       {preview && (
-        <div className="max-w-5xl mx-auto mb-2 sm:mb-4">
+        <div className="max-w-5xl mx-auto mb-2">
           <div className="relative inline-block">
             <img
               src={preview}
               alt="Preview"
-              className="w-24 h-24 sm:w-36 sm:h-36 object-cover rounded-2xl border border-zinc-200 shadow-xs"
+              className="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-2xl border border-slate-700 shadow-lg"
             />
 
             <button
@@ -184,21 +179,21 @@ const MessageInput = () => {
                   fileInputRef.current.value = "";
                 }
               }}
-              className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-600 text-white rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shadow-md transition-colors cursor-pointer"
+              className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-600 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md transition-colors cursor-pointer"
             >
-              <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       )}
 
-      <div className="flex items-end gap-1.5 sm:gap-3 max-w-5xl mx-auto">
+      <div className="flex items-end gap-1.5 sm:gap-2.5 max-w-5xl mx-auto">
         
         {/* File Attachment Button */}
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-white border border-zinc-200/80 hover:bg-zinc-100/80 text-zinc-500 hover:text-indigo-600 flex items-center justify-center shrink-0 active:scale-95 transition-all shadow-xs cursor-pointer"
+          className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-slate-900 border border-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-indigo-400 flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
           title="Attach File"
         >
           <Paperclip className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -208,17 +203,17 @@ const MessageInput = () => {
         <button
           type="button"
           onClick={() => setShowEmojiPicker((prev) => !prev)}
-          className={`h-10 w-10 sm:h-12 sm:w-12 rounded-2xl border transition-all flex items-center justify-center shrink-0 active:scale-95 shadow-xs cursor-pointer ${
+          className={`h-10 w-10 sm:h-11 sm:w-11 rounded-xl border transition-all flex items-center justify-center shrink-0 active:scale-95 cursor-pointer ${
             showEmojiPicker
-              ? "border-indigo-500/40 text-indigo-600 bg-indigo-50/50"
-              : "bg-white border-zinc-200/80 text-zinc-500 hover:text-amber-500 hover:bg-zinc-100/80"
+              ? "border-indigo-500/50 text-indigo-400 bg-indigo-500/10"
+              : "bg-slate-900 border-slate-800/80 text-slate-400 hover:text-amber-400 hover:bg-slate-800"
           }`}
           title="Select Emoji"
         >
           <Smile className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
-        {/* Expanded Multiline Textarea */}
+        {/* Text Area Input */}
         <div className="flex-1 relative min-w-0">
           <textarea
             ref={textareaRef}
@@ -229,7 +224,7 @@ const MessageInput = () => {
             placeholder="Type your message..."
             autoCapitalize="sentences"
             autoCorrect="on"
-            className="w-full resize-none rounded-2xl bg-zinc-100/80 focus:bg-white border border-zinc-200 px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-800 placeholder-zinc-400 outline-none focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 custom-scrollbar max-h-36 sm:max-h-56 block leading-relaxed transition-all shadow-xs"
+            className="w-full resize-none rounded-xl bg-slate-900/90 border border-slate-800 px-3 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20 custom-scrollbar max-h-32 sm:max-h-44 block leading-relaxed transition-all"
           />
         </div>
 
@@ -238,10 +233,10 @@ const MessageInput = () => {
           type="button"
           onClick={handleSend}
           disabled={(!message.trim() && !selectedImage) || isSending}
-          className={`h-10 w-10 sm:h-12 sm:w-12 rounded-2xl flex items-center justify-center shrink-0 active:scale-95 shadow-md transition-all cursor-pointer ${
+          className={`h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex items-center justify-center shrink-0 active:scale-95 shadow-md transition-all cursor-pointer ${
             (message.trim() || selectedImage) && !isSending
-              ? "bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-indigo-500/20 hover:brightness-110"
-              : "bg-zinc-200/60 border border-zinc-200/80 text-zinc-400 cursor-not-allowed shadow-none"
+              ? "bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/30"
+              : "bg-slate-900 border border-slate-800 text-slate-600 cursor-not-allowed"
           }`}
           title="Send Message"
         >

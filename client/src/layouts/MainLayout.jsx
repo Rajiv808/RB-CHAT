@@ -10,13 +10,13 @@ const MainLayout = () => {
     <div className="h-[100dvh] w-screen overflow-hidden flex bg-[#070b14] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
       
       {/* 
-        SIDEBAR CONTAINER:
-        - Mobile: Takes 100% width when NO chat is selected (!selectedChat). Hidden when a chat IS selected.
-        - Desktop (md:flex): Fixed width (w-80 / lg:w-96), always visible side-by-side with Chat.
+        SIDEBAR CONTAINER (MOBILE vs DESKTOP):
+        - Mobile: Shown IF no chat is selected (!selectedChat). Hidden IF chat is selected.
+        - Desktop (md:flex): ALWAYS shown on left side (w-80 / lg:w-96).
       */}
       <div
-        className={`w-full md:w-80 lg:w-96 h-full flex-shrink-0 ${
-          !selectedChat ? "flex" : "hidden md:flex"
+        className={`w-full md:w-80 lg:w-96 h-full flex-shrink-0 bg-[#070b14] border-r border-slate-800/80 ${
+          !selectedChat ? "flex flex-col" : "hidden md:flex md:flex-col"
         }`}
       >
         <Sidebar />
@@ -24,11 +24,11 @@ const MainLayout = () => {
 
       {/* 
         MAIN CHAT / WELCOME AREA:
-        - Mobile: Takes 100% width ONLY when a chat IS selected (selectedChat). Hidden when no chat is selected.
-        - Desktop (md:flex): Always visible, takes up remaining space.
+        - Mobile: Shown ONLY when a chat IS selected (selectedChat).
+        - Desktop (md:flex): ALWAYS shown on right side.
       */}
       <div
-        className={`flex-1 h-full min-w-0 min-h-0 flex-col overflow-hidden relative ${
+        className={`flex-1 h-full min-w-0 min-h-0 flex-col overflow-hidden relative bg-[#070b14] ${
           selectedChat ? "flex" : "hidden md:flex"
         }`}
       >
@@ -37,7 +37,7 @@ const MainLayout = () => {
             onToggleSidebar={() => selectChat(null)}
           />
         ) : (
-          <div className="h-full w-full flex flex-col items-center justify-center p-6 text-center bg-[#070b14] relative">
+          <div className="h-full w-full flex flex-col items-center justify-center p-6 text-center relative">
             <div className="w-16 h-16 rounded-3xl bg-indigo-600/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 shadow-xl shadow-indigo-950/30">
               <MessageSquare size={32} />
             </div>
