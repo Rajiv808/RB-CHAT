@@ -2,45 +2,20 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import VerifyOTP from "./pages/VerifyOTP";
 import Home from "./pages/Home";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
-import PublicRoute from "./routes/PublicRoute"; // Redirects logged-in users away from auth pages
 
 function App() {
   return (
-    <div className="w-screen h-[100dvh] overflow-hidden bg-[#070b14]">
+    <div className="w-screen h-dvh overflow-hidden bg-slate-100">
       <Routes>
         <Route path="/" element={<Navigate to="/chat" replace />} />
 
-        {/* Public / Guest Routes */}
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/verify-otp"
-          element={
-            <PublicRoute>
-              <VerifyOTP />
-            </PublicRoute>
-          }
-        />
+        <Route path="/login" element={<Login />} />
 
-        {/* Protected Routes */}
+        <Route path="/register" element={<Register />} />
+
         <Route
           path="/chat"
           element={
@@ -50,7 +25,6 @@ function App() {
           }
         />
 
-        {/* Fallback 404 Route */}
         <Route path="*" element={<Navigate to="/chat" replace />} />
       </Routes>
     </div>
