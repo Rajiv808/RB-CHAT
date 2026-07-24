@@ -12,22 +12,12 @@ const Home = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
     if (typeof window === "undefined") return true;
-
     return !isMobile();
   });
 
-  // Mobile behavior
+  // Keep sidebar in sync with screen size and selected chat
   useEffect(() => {
-    if (isMobile()) {
-      setIsSidebarOpen(!selectedChat);
-    } else {
-      setIsSidebarOpen(true);
-    }
-  }, [selectedChat]);
-
-  // Handle resize
-  useEffect(() => {
-    const handleResize = () => {
+    const updateLayout = () => {
       if (isMobile()) {
         setIsSidebarOpen(!selectedChat);
       } else {
@@ -35,11 +25,10 @@ const Home = () => {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    updateLayout();
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    window.addEventListener("resize", updateLayout);
+    return () => window.removeEventListener("resize", updateLayout);
   }, [selectedChat]);
 
   const openSidebar = () => {
@@ -64,44 +53,44 @@ const Home = () => {
     <div className="relative h-dvh w-full overflow-hidden bg-slate-100">
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-slate-50 to-sky-100" />
 
-      {isSidebarOpen && selectedChat && (
+      {/* Mobile Overlay */}
+      {isMobile() && isSidebarOpen && selectedChat && (
         <div
+          className="fixed inset-0 z-30 bg-black/40"
           onClick={closeSidebar}
-          className="fixed inset-0 z-30 bg-black/40 md:hidden"
         />
       )}
 
-      <div className="flex h-full w-full">
+      <div className="flex h-full w-full overflow-hidden">
 
         {/* Sidebar */}
         <aside
           className={`
-            fixed
-            inset-y-0
-            left-0
+            fixed inset-y-0 left-0
             z-40
-            w-[85%]
+            w-[85vw]
             max-w-[320px]
             bg-white
-            border-r
-            border-slate-200
-            transition-transform
-            duration-300
-            md:relative
-            md:translate-x-0
-            md:w-80
+            border-r border-slate-200
+            transform transition-transform duration-300 ease-in-out
             ${
               isSidebarOpen
                 ? "translate-x-0"
                 : "-translate-x-full"
             }
+
+            md:relative
+            md:w-80
+            md:max-w-none
+            md:translate-x-0
+            md:flex-shrink-0
           `}
         >
           <Sidebar onClose={closeSidebar} />
         </aside>
 
-        {/* Chat */}
-        <main className="flex-1 min-w-0 h-full overflow-hidden">
+        {/* Chat Area */}
+        <main className="flex flex-1 min-w-0 min-h-0 overflow-hidden">
           <ChatWindow
             onToggleSidebar={toggleSidebar}
             onOpenSidebar={openSidebar}
