@@ -23,19 +23,16 @@ const Register = () => {
     try {
       await registerUser(values);
 
-      toast.success("OTP sent to your email.", {
-        style: {
-          background: "#090d16",
-          color: "#fff",
-          border: "1px solid #312e81",
-        },
-      });
+toast.success("Account created successfully!", {
+  style: {
+    background: "#090d16",
+    color: "#fff",
+    border: "1px solid #312e81",
+  },
+});
 
-      navigate("/verify-otp", {
-        state: {
-          email: values.email,
-        },
-      });
+navigate("/");
+     
     } catch (err) {
       toast.error(
         err.response?.data?.message || "Registration failed. Please try again.",

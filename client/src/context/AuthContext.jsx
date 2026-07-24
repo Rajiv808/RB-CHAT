@@ -31,22 +31,7 @@ const AuthProvider = ({ children }) => {
     return data;
   };
 
-  // Register now only sends OTP
-  const register = async (values) => {
-    const { data } = await API.post("/auth/register", values);
-    return data;
-  };
-
-  const verifyOTP = async (values) => {
-    const { data } = await API.post("/auth/verify-otp", values);
-    return data;
-  };
-
-  const resendOTP = async (email) => {
-    const { data } = await API.post("/auth/resend-otp", { email });
-    return data;
-  };
-
+  
   const logout = async () => {
     try {
       await API.post("/auth/logout");
@@ -63,8 +48,7 @@ const AuthProvider = ({ children }) => {
         loading,
         login,
         register,
-        verifyOTP,
-        resendOTP,
+    
         logout,
         checkUser,
       }}
