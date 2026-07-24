@@ -42,11 +42,12 @@ const ChatListItem = ({
 
   return (
     <button
+      type="button"
       onClick={onClick}
-      className={`w-full flex items-center gap-3 sm:gap-3.5 p-2.5 sm:p-3 rounded-2xl transition-all duration-200 text-left border relative group select-none active:scale-[0.98] cursor-pointer ${
+      className={`w-full flex items-center gap-3 sm:gap-3.5 p-3 sm:p-3.5 rounded-2xl transition-all duration-200 text-left border relative group select-none touch-manipulation transform-gpu active:scale-[0.98] cursor-pointer ${
         active
-          ? "bg-indigo-600 border-indigo-500 shadow-md shadow-indigo-500/20 text-white"
-          : "bg-white hover:bg-slate-50 border-slate-200/80 text-slate-800 shadow-2xs"
+          ? "bg-gradient-to-r from-violet-600 via-indigo-600 to-indigo-700 border-indigo-500/50 text-white shadow-lg shadow-indigo-500/25 ring-1 ring-white/20"
+          : "bg-white/80 dark:bg-slate-900/80 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 border-slate-200/80 dark:border-slate-800/80 text-slate-800 dark:text-slate-100 shadow-xs backdrop-blur-md"
       }`}
     >
       {/* Avatar Container */}
@@ -55,14 +56,14 @@ const ChatListItem = ({
           src={avatar}
           name={chatName}
           online={online}
-          size={46}
+          size={48}
         />
         {chat.isGroupChat && (
           <div
-            className={`absolute -bottom-1 -right-1 p-1 rounded-full border-2 ${
+            className={`absolute -bottom-0.5 -right-0.5 p-1 rounded-full ring-2 transition-colors ${
               active
-                ? "border-indigo-600 bg-indigo-950 text-indigo-200"
-                : "border-white bg-slate-200 text-slate-600"
+                ? "ring-indigo-700 bg-slate-900 text-violet-300"
+                : "ring-white dark:ring-slate-900 bg-gradient-to-tr from-violet-600 to-indigo-600 text-white shadow-sm"
             }`}
           >
             <Users size={10} />
@@ -73,18 +74,22 @@ const ChatListItem = ({
       {/* Main Info Wrapper */}
       <div className="flex-1 min-w-0 flex flex-col justify-center">
         {/* Top Row: Name + Time */}
-        <div className="flex justify-between items-center mb-0.5 sm:mb-1">
+        <div className="flex justify-between items-center mb-1">
           <h3
-            className={`font-semibold text-xs sm:text-sm truncate pr-2 ${
-              active ? "text-white" : "text-slate-900"
+            className={`font-bold text-xs sm:text-sm truncate pr-2 leading-tight ${
+              active ? "text-white" : "text-slate-900 dark:text-slate-100"
             }`}
           >
             {chatName}
           </h3>
 
           <span
-            className={`text-[10px] sm:text-[11px] shrink-0 font-medium ${
-              active ? "text-indigo-100" : "text-slate-400"
+            className={`text-[10px] sm:text-[11px] shrink-0 font-semibold transition-colors ${
+              active
+                ? "text-indigo-100/90"
+                : unreadCount > 0
+                ? "text-violet-600 dark:text-violet-400 font-bold"
+                : "text-slate-400 dark:text-slate-500"
             }`}
           >
             {updatedTime}
@@ -94,24 +99,24 @@ const ChatListItem = ({
         {/* Bottom Row: Message Preview + Unread Count */}
         <div className="flex justify-between items-center">
           <p
-            className={`text-[11px] sm:text-xs truncate pr-2 ${
+            className={`text-[11px] sm:text-xs truncate pr-2 font-medium transition-colors ${
               active
-                ? "text-indigo-100/90"
+                ? "text-indigo-100/80"
                 : unreadCount > 0
-                ? "text-slate-900 font-bold"
-                : "text-slate-500"
+                ? "text-slate-900 dark:text-slate-50 font-bold"
+                : "text-slate-500 dark:text-slate-400"
             }`}
           >
             {latestMessage}
           </p>
 
-          {/* Unread Badge Indicator */}
+          {/* High-Vibrancy Unread Badge Indicator */}
           {unreadCount > 0 && (
             <span
-              className={`shrink-0 min-w-[18px] sm:min-w-[20px] h-4.5 sm:h-5 px-1.5 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold ${
+              className={`shrink-0 min-w-[20px] h-5 px-1.5 rounded-full flex items-center justify-center text-[10px] font-extrabold tracking-tight transition-transform group-hover:scale-105 ${
                 active
-                  ? "bg-white text-indigo-600"
-                  : "bg-indigo-600 text-white shadow-xs"
+                  ? "bg-white text-indigo-700 shadow-sm"
+                  : "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-500/30"
               }`}
             >
               {unreadCount > 99 ? "99+" : unreadCount}

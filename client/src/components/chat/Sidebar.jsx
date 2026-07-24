@@ -94,10 +94,10 @@ const Sidebar = ({ onClose }) => {
       <motion.aside
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
-        className="h-full w-full bg-[#070b14] flex flex-col border-r border-slate-800/80 relative z-20 overflow-hidden select-none"
+        className="h-full w-full bg-slate-900/90 dark:bg-slate-950/90 backdrop-blur-xl flex flex-col border-r border-slate-800/80 relative z-20 overflow-hidden select-none transform-gpu"
       >
         {/* ================= Header / User Profile Card ================= */}
-        <div className="p-3.5 sm:p-4 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md shrink-0">
+        <div className="p-3.5 sm:p-4 border-b border-slate-800/80 bg-slate-900/60 dark:bg-slate-900/80 backdrop-blur-md shrink-0">
           <div className="flex justify-between items-center mb-3 gap-2">
             
             {/* User Info */}
@@ -112,11 +112,11 @@ const Sidebar = ({ onClose }) => {
               <div className="min-w-0 flex-1">
                 <h2 className="font-bold text-slate-100 text-xs sm:text-sm md:text-base truncate flex items-center gap-1 sm:gap-1.5 tracking-tight">
                   <span className="truncate">{user?.name || "User"}</span>
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
                 </h2>
 
-                <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-emerald-400 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-emerald-400 font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-sm shadow-emerald-500/50" />
                   <span>Online</span>
                 </div>
               </div>
@@ -129,21 +129,21 @@ const Sidebar = ({ onClose }) => {
               <button
                 onClick={() => setShowUsers(true)}
                 title="New Chat"
-                className="p-2 sm:p-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-950/50 transition-all active:scale-95 cursor-pointer"
+                className="p-2 sm:p-2.5 rounded-2xl bg-gradient-to-r from-violet-600 via-indigo-600 to-indigo-700 hover:from-violet-500 hover:to-indigo-600 text-white shadow-md shadow-indigo-500/20 transition-all active:scale-95 cursor-pointer touch-manipulation"
               >
                 <Plus className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </button>
 
               <button
                 title="Notifications"
-                className="p-2 sm:p-2.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-all active:scale-95 hidden sm:block cursor-pointer"
+                className="p-2 sm:p-2.5 rounded-2xl hover:bg-slate-800/80 text-slate-400 hover:text-slate-100 transition-all active:scale-95 hidden sm:block cursor-pointer touch-manipulation"
               >
                 <Bell className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </button>
 
               <button
                 title="Settings"
-                className="p-2 sm:p-2.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-all active:scale-95 hidden sm:block cursor-pointer"
+                className="p-2 sm:p-2.5 rounded-2xl hover:bg-slate-800/80 text-slate-400 hover:text-slate-100 transition-all active:scale-95 hidden sm:block cursor-pointer touch-manipulation"
               >
                 <Settings className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </button>
@@ -151,7 +151,7 @@ const Sidebar = ({ onClose }) => {
               <button
                 onClick={handleLogout}
                 title="Log Out"
-                className="p-2 sm:p-2.5 rounded-xl hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 transition-all active:scale-95 cursor-pointer"
+                className="p-2 sm:p-2.5 rounded-2xl hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 transition-all active:scale-95 cursor-pointer touch-manipulation"
               >
                 <LogOut className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </button>
@@ -160,7 +160,7 @@ const Sidebar = ({ onClose }) => {
               {onClose && (
                 <button
                   onClick={onClose}
-                  className="md:hidden p-2 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-slate-100 ml-0.5 cursor-pointer"
+                  className="md:hidden p-2 rounded-2xl hover:bg-slate-800 text-slate-400 hover:text-slate-100 ml-0.5 cursor-pointer touch-manipulation"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -185,7 +185,7 @@ const Sidebar = ({ onClose }) => {
                   key={i}
                   className="flex items-center gap-3 p-3 rounded-2xl bg-slate-900/60 border border-slate-800/60 animate-pulse"
                 >
-                  <div className="w-10 h-10 rounded-full bg-slate-800 shrink-0" />
+                  <div className="w-11 h-11 rounded-full bg-slate-800 shrink-0" />
                   <div className="flex-1 space-y-2">
                     <div className="h-3.5 bg-slate-800 rounded-md w-1/2" />
                     <div className="h-3 bg-slate-800/60 rounded-md w-3/4" />
@@ -195,14 +195,14 @@ const Sidebar = ({ onClose }) => {
             </div>
           ) : filteredChats.length === 0 ? (
             /* Empty State */
-            <div className="flex flex-col items-center justify-center text-center py-10 px-4">
-              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 mb-3">
+            <div className="flex flex-col items-center justify-center text-center py-12 px-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600/20 to-indigo-600/20 border border-violet-500/30 flex items-center justify-center text-violet-400 mb-3.5 shadow-inner">
                 <MessageSquarePlus className="w-6 h-6" />
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-slate-300">
+              <p className="text-xs sm:text-sm font-bold text-slate-200">
                 {search ? "No matches found" : "No conversations yet"}
               </p>
-              <p className="text-[11px] sm:text-xs text-slate-500 mt-1 max-w-[200px] leading-relaxed">
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-1 max-w-[200px] leading-relaxed font-medium">
                 {search
                   ? "Try searching for another contact name"
                   : "Click '+' above to start chatting with friends"}
