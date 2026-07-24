@@ -1,45 +1,75 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/chat/Sidebar";
 import ChatWindow from "../components/chat/ChatWindow";
+import useChat from "../hooks/useChat";
+
+const MOBILE_BREAKPOINT = 768;
 
 const Home = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const { selectedChat } = useChat();
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(
+    window.innerWidth >= MOBILE_BREAKPOINT
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= MOBILE_BREAKPOINT) {
+        setIsSidebarOpen(true);
+      } else if (!selectedChat) {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [selectedChat]);
+
+  useEffect(() => {
+    if (window.innerWidth < MOBILE_BREAKPOINT && selectedChat) {
+      setIsSidebarOpen(false);
+    }
+  }, [selectedChat]);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
 
   return (
-    // 'fixed inset-0 h-screen w-screen overflow-hidden' guarantees the app stays locked to the screen
-    <div className="fixed inset-0 h-screen h-[100dvh] w-screen overflow-hidden bg-slate-50 font-sans text-zinc-800 antialiased selection:bg-indigo-500 selection:text-white">
-      
-      {/* Ambient Background Light Flares (Soft Modern Glows) */}
-      <div className="pointer-events-none absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-300/30 via-violet-300/20 to-transparent blur-[140px]" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-tl from-sky-300/30 via-indigo-200/20 to-transparent blur-[140px]" />
+    <div className="fixed inset-0 bg-slate-100 overflow-hidden">
+      {isSidebarOpen && (
+        <div
+          onClick={() => setIsSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+        />
+      )}
 
-      {/* Main Container locked to exact screen height */}
-      <div className="relative z-10 flex h-full w-full overflow-hidden bg-white/70 backdrop-blur-2xl">
-        
-        {/* Mobile Backdrop Overlay */}
-        {isSidebarOpen && (
-          <div
-            onClick={() => setIsSidebarOpen(false)}
-            className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-md transition-opacity duration-300 md:hidden"
-            aria-hidden="true"
-          />
-        )}
-
-        {/* Sidebar Container - Dark Modern Contrast Sidebar */}
+      <div className="flex h-full w-full">
         <aside
-          className={`fixed inset-y-0 left-0 z-50 h-full w-80 transform bg-[#0B0F19]/95 backdrop-blur-xl border-r border-zinc-800/60 shadow-2xl transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
-            isSidebarOpen ? "translate-x-0 shadow-indigo-950/20" : "-translate-x-full"
-          }`}
+          className={`
+            fixed inset-y-0 left-0 z-50
+            w-80 max-w-[85vw]
+            bg-[#0B0F19]
+            transition-transform duration-300
+            ${
+              isSidebarOpen
+                ? "translate-x-0"
+                : "-translate-x-full"
+            }
+            md:relative md:translate-x-0
+          `}
         >
-          <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+          <Sidebar onClose={() => setIsSidebarOpen(false)} />
         </aside>
 
-        {/* Chat Area Container - Bright, Clean & Vibrant Chat Canvas */}
-        <main className="flex flex-1 flex-col h-full min-w-0 overflow-hidden bg-slate-100/50 backdrop-blur-md relative">
-          <ChatWindow onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+        <main className="flex flex-1 min-w-0 min-h-0 overflow-hidden">
+          <ChatWindow
+            onToggleSidebar={toggleSidebar}
+          />
         </main>
-
       </div>
     </div>
   );
