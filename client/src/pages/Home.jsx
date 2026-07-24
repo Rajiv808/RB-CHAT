@@ -1,100 +1,95 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/chat/Sidebar";
 import ChatWindow from "../components/chat/ChatWindow";
-import useChat from "../hooks/useChat"; // Imported to react to chat selection
+import useChat from "../hooks/useChat";
+
+const MOBILE_BREAKPOINT = 768;
 
 const Home = () => {
   const { selectedChat } = useChat();
 
-  // On mobile: Open sidebar when NO chat is selected, close it when a chat IS selected
+  const isMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth >= 768 ? true : !selectedChat;
-    }
-    return true;
+    if (typeof window === "undefined") return true;
+
+    return !isMobile();
   });
 
-  // Automatically handle mobile sidebar state on chat selection
+  // Mobile behavior
   useEffect(() => {
-    if (window.innerWidth < 768) {
+    if (isMobile()) {
       setIsSidebarOpen(!selectedChat);
+    } else {
+      setIsSidebarOpen(true);
     }
   }, [selectedChat]);
 
-  // Handle window resizing
+  // Handle resize
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsSidebarOpen(true);
-      } else {
-        // If switching to mobile, open sidebar if no chat selected, otherwise close it
+      if (isMobile()) {
         setIsSidebarOpen(!selectedChat);
+      } else {
+        setIsSidebarOpen(true);
       }
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, [selectedChat]);
 
-  // Close sidebar using Escape key
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape" && window.innerWidth < 768) {
-        setIsSidebarOpen(false);
-      }
-    };
+  const openSidebar = () => {
+    if (isMobile()) {
+      setIsSidebarOpen(true);
+    }
+  };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
-  const openSidebar = () => setIsSidebarOpen(true);
   const closeSidebar = () => {
-    if (window.innerWidth < 768) {
+    if (isMobile()) {
       setIsSidebarOpen(false);
     }
   };
 
   const toggleSidebar = () => {
-    if (window.innerWidth < 768) {
+    if (isMobile()) {
       setIsSidebarOpen((prev) => !prev);
     }
   };
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden bg-slate-100">
-      {/* Background */}
+    <div className="relative h-dvh w-full overflow-hidden bg-slate-100">
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-slate-50 to-sky-100" />
 
-      {/* Mobile Overlay (Only active when sidebar is opened on top of an existing chat) */}
       {isSidebarOpen && selectedChat && (
-        <button
+        <div
           onClick={closeSidebar}
-          className="fixed inset-0 z-30 bg-black/40 md:hidden cursor-pointer"
-          aria-label="Close Sidebar"
+          className="fixed inset-0 z-30 bg-black/40 md:hidden"
         />
       )}
 
-      <div className="flex h-full w-full overflow-hidden">
+      <div className="flex h-full w-full">
+
         {/* Sidebar */}
         <aside
           className={`
             fixed
-            top-0
+            inset-y-0
             left-0
             z-40
-            h-full
-            w-full
-            sm:w-80
-            md:w-80
+            w-[85%]
+            max-w-[320px]
             bg-white
             border-r
             border-slate-200
             transition-transform
             duration-300
-            ease-in-out
             md:relative
             md:translate-x-0
+            md:w-80
             ${
               isSidebarOpen
                 ? "translate-x-0"
@@ -102,19 +97,17 @@ const Home = () => {
             }
           `}
         >
-          <Sidebar
-            isOpen={isSidebarOpen}
-            onClose={closeSidebar}
-          />
+          <Sidebar onClose={closeSidebar} />
         </aside>
 
-        {/* Chat / Main Window */}
-        <main className="flex flex-1 min-w-0 flex-col overflow-hidden h-full">
+        {/* Chat */}
+        <main className="flex-1 min-w-0 h-full overflow-hidden">
           <ChatWindow
             onToggleSidebar={toggleSidebar}
             onOpenSidebar={openSidebar}
           />
         </main>
+
       </div>
     </div>
   );

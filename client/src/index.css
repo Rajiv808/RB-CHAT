@@ -1,70 +1,63 @@
 @import "tailwindcss";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  /* Removes default grey tap flash on iOS/Android */
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 1. LOCK THE VIEWPORT (MOBILE OPTIMIZED) */
-html,
-body,
-#root {
+html {
   width: 100%;
-  /* Modern dynamic viewport height for mobile browser URL bars */
-  height: 100dvh;
-  max-height: 100dvh;
-  max-width: 100vw;
-  overflow: hidden !important; /* Prevents window scrolling */
-  /* Prevents elastic pull-to-refresh / rubber-banding on iOS */
-  overscroll-behavior: none;
-  /* Prevents iOS text size auto-scaling */
-  -webkit-text-size-adjust: 100%;
+  height: 100%;
 }
 
-/* 2. ATMOSPHERIC DARK THEME & TYPOGRAPHY */
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  /* Matches your MainLayout dark background */
-  background-color: #070b14;
-  color: #f1f5f9;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+
+  font-family: Inter, system-ui, sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Touch screen scrolling physics */
-  -webkit-overflow-scrolling: touch;
 }
 
-/* 3. CUSTOM SELECTION HIGHLIGHT */
+#root {
+  width: 100%;
+  height: 100%;
+}
+
 ::selection {
-  background-color: rgba(99, 102, 241, 0.4);
-  color: #ffffff;
+  background: rgba(99, 102, 241, .25);
 }
 
-/* 4. SLEEK DARK GLASS SCROLLBAR */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.3);
-  border-radius: 9999px;
-  backdrop-filter: blur(8px);
+  background: #cbd5e1;
+  border-radius: 999px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.6);
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+  background: #94a3b8;
 }
 
-/* Firefox scrollbar compatibility */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(99, 102, 241, 0.3) rgba(15, 23, 42, 0.6);
+  scrollbar-color: #cbd5e1 transparent;
 }
