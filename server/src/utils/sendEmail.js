@@ -6,7 +6,10 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false, // Use STARTTLS
+  secure: false,
+
+  // Force IPv4 instead of IPv6
+  family: 4,
 
   auth: {
     user: process.env.EMAIL_USER,
@@ -35,11 +38,11 @@ const sendEmail = async (to, otp) => {
       subject: "Verify Your Email - RB Chat",
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px;">
-          <h2 style="color:#4F46E5;">RB Chat</h2>
+          <h2 style="color:#4F46E5;">RB Chat Email Verification</h2>
 
           <p>Hello,</p>
 
-          <p>Your verification OTP is:</p>
+          <p>Your OTP is:</p>
 
           <div style="
             font-size:32px;
@@ -53,7 +56,7 @@ const sendEmail = async (to, otp) => {
 
           <p>This OTP is valid for <strong>10 minutes</strong>.</p>
 
-          <p>If you didn't request this email, you can safely ignore it.</p>
+          <p>If you didn't request this email, simply ignore it.</p>
 
           <hr>
 
