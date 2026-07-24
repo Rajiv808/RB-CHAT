@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Deterministic dynamic gradient generator based on user name
 const GRADIENT_PALETTES = [
@@ -6,9 +6,9 @@ const GRADIENT_PALETTES = [
   "from-blue-500 to-cyan-500",
   "from-emerald-500 to-teal-600",
   "from-rose-500 to-pink-600",
-  "from-amber-500 to-[#F97316]",
-  "from-[#8B5CF6] to-[#EC4899]",
-  "from-[#06B6D4] to-indigo-600",
+  "from-amber-500 to-orange-500",
+  "from-purple-500 to-pink-500",
+  "from-cyan-500 to-indigo-600",
 ];
 
 const getGradientByName = (name = "") => {
@@ -29,6 +29,11 @@ const Avatar = ({
 }) => {
   const [imageError, setImageError] = useState(false);
 
+  // Reset error state if the src prop updates
+  useEffect(() => {
+    setImageError(false);
+  }, [src]);
+
   // Compute initials cleanly
   const initials = name
     ? name
@@ -47,7 +52,7 @@ const Avatar = ({
 
   return (
     <div
-      className={`relative inline-block flex-shrink-0 select-none ${className}`}
+      className={`relative inline-flex items-center justify-center shrink-0 select-none ${className}`}
       style={{
         width: size,
         height: size,
@@ -59,13 +64,13 @@ const Avatar = ({
           src={src}
           alt={name || "Avatar"}
           onError={() => setImageError(true)}
-          className="w-full h-full rounded-full object-cover border border-slate-200 shadow-sm transition-transform duration-200"
+          className="w-full h-full rounded-full object-cover border border-slate-200/80 shadow-sm transition-transform duration-200"
         />
       ) : (
         <div
-          className={`w-full h-full rounded-full bg-gradient-to-br ${gradientClass} flex items-center justify-center text-white font-semibold shadow-sm border border-white/40`}
+          className={`w-full h-full rounded-full bg-gradient-to-br ${gradientClass} flex items-center justify-center text-white font-semibold shadow-sm border border-white/30`}
           style={{
-            fontSize: Math.round(size * 0.38),
+            fontSize: Math.max(10, Math.round(size * 0.38)),
             letterSpacing: "0.02em",
           }}
         >
@@ -73,10 +78,10 @@ const Avatar = ({
         </div>
       )}
 
-      {/* Online Status Indicator */}
+      {/* Responsive Online Status Indicator */}
       {online && (
         <span
-          className="absolute rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center shadow-sm"
+          className="absolute rounded-full bg-emerald-500 ring-2 ring-white flex items-center justify-center shadow-sm z-10"
           style={{
             width: statusBadgeSize,
             height: statusBadgeSize,
@@ -85,7 +90,7 @@ const Avatar = ({
           }}
         >
           {/* Subtle pulsating glow effect */}
-          <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
+          <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75 pointer-events-none" />
         </span>
       )}
     </div>
