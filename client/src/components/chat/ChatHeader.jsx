@@ -9,7 +9,23 @@ const ChatHeader = ({ onToggleSidebar }) => {
   const { selectedChat } = useChat();
   const { onlineUsers = [] } = useSocket();
 
-  if (!selectedChat) return null;
+  // If no chat is selected
+  if (!selectedChat) {
+    return (
+      <header className="h-16 w-full flex items-center px-4 bg-white border-b border-zinc-200">
+        <button
+          onClick={onToggleSidebar}
+          className="md:hidden p-2 rounded-lg hover:bg-zinc-100"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+
+        <h2 className="ml-3 text-lg font-semibold text-zinc-800">
+          Chats
+        </h2>
+      </header>
+    );
+  }
 
   const otherUser = !selectedChat.isGroupChat
     ? selectedChat.users?.find((u) => u._id !== user?._id)
@@ -24,19 +40,17 @@ const ChatHeader = ({ onToggleSidebar }) => {
     : onlineUsers.includes(otherUser?._id);
 
   return (
-    <header className="w-full h-16 flex-shrink-0 px-3 sm:px-4 md:px-6 bg-[#F8F9FA]/90 backdrop-blur-md border-b border-zinc-200/80 flex items-center justify-between z-30 shadow-xs">
-      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1 mr-2">
-        
-        {/* Mobile Drawer Toggle */}
+    <header className="w-full h-16 flex items-center justify-between px-4 bg-white border-b border-zinc-200">
+
+      <div className="flex items-center gap-3">
+
         <button
           onClick={onToggleSidebar}
-          aria-label="Toggle sidebar"
-          className="md:hidden p-1.5 sm:p-2 -ml-1 rounded-xl text-zinc-500 hover:text-zinc-900 hover:bg-zinc-200/60 transition-all active:scale-95 shrink-0"
+          className="md:hidden p-2 rounded-lg hover:bg-zinc-100"
         >
-          <Menu className="w-5 h-5" />
+          <Menu className="w-6 h-6" />
         </button>
 
-        {/* Avatar */}
         <Avatar
           src={selectedChat.isGroupChat ? "" : otherUser?.avatar}
           name={chatName}
@@ -44,47 +58,30 @@ const ChatHeader = ({ onToggleSidebar }) => {
           size={40}
         />
 
-        {/* Chat Metadata */}
-        <div className="min-w-0 flex-1">
-          <h2 className="font-semibold text-zinc-900 text-sm sm:text-base truncate tracking-tight">
-            {chatName}
-          </h2>
-          <p className="text-[11px] sm:text-xs truncate font-medium mt-0.5">
-            {selectedChat.isGroupChat ? (
-              <span className="text-zinc-500">
-                {selectedChat.users?.length || 0} members
-              </span>
-            ) : isOnline ? (
-              <span className="text-emerald-600 flex items-center gap-1.5 font-medium">
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 inline-block animate-pulse shadow-xs shadow-emerald-500/50" />
-                Online
-              </span>
-            ) : (
-              <span className="text-zinc-400">Offline</span>
-            )}
+        <div>
+          <h2 className="font-semibold">{chatName}</h2>
+
+          <p className="text-xs text-zinc-500">
+            {selectedChat.isGroupChat
+              ? `${selectedChat.users?.length || 0} members`
+              : isOnline
+              ? "Online"
+              : "Offline"}
           </p>
         </div>
       </div>
 
-      {/* Header Controls */}
-      <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
-        <button 
-          aria-label="Audio call" 
-          className="p-2 sm:p-2.5 rounded-xl hover:bg-zinc-200/60 text-zinc-600 hover:text-indigo-600 transition-all active:scale-95"
-        >
-          <Phone className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+      <div className="flex items-center gap-1">
+        <button className="p-2 rounded-lg hover:bg-zinc-100">
+          <Phone className="w-5 h-5" />
         </button>
-        <button 
-          aria-label="Video call" 
-          className="p-2 sm:p-2.5 rounded-xl hover:bg-zinc-200/60 text-zinc-600 hover:text-indigo-600 transition-all active:scale-95"
-        >
-          <Video className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+
+        <button className="p-2 rounded-lg hover:bg-zinc-100">
+          <Video className="w-5 h-5" />
         </button>
-        <button 
-          aria-label="More options" 
-          className="p-2 sm:p-2.5 rounded-xl hover:bg-zinc-200/60 text-zinc-600 hover:text-zinc-900 transition-all active:scale-95"
-        >
-          <MoreVertical className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+
+        <button className="p-2 rounded-lg hover:bg-zinc-100">
+          <MoreVertical className="w-5 h-5" />
         </button>
       </div>
     </header>

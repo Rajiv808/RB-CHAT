@@ -1,59 +1,105 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/chat/Sidebar";
 import ChatWindow from "../components/chat/ChatWindow";
 
 const Home = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(
+    window.innerWidth >= 768
+  );
 
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
-  const closeSidebar = () => setIsSidebarOpen(false);
-
-  // Close sidebar automatically on pressing the 'Escape' key for better accessibility
+  // Update sidebar when screen size changes
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape" && isSidebarOpen) {
-        closeSidebar();
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
       }
     };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Close sidebar using Escape
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setIsSidebarOpen(false);
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isSidebarOpen]);
+  }, []);
+
+  const openSidebar = () => setIsSidebarOpen(true);
+  const closeSidebar = () => {
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  const toggleSidebar = () => {
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen((prev) => !prev);
+    }
+  };
 
   return (
-    <div className="fixed inset-0 h-[100dvh] w-screen overflow-hidden bg-slate-50 font-sans text-zinc-800 antialiased selection:bg-indigo-500 selection:text-white">
-      
-      {/* Ambient Background Light Flares */}
-      <div className="pointer-events-none absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-300/30 via-violet-300/20 to-transparent blur-[140px]" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-tl from-sky-300/30 via-indigo-200/20 to-transparent blur-[140px]" />
+    <div className="relative h-[100dvh] w-full overflow-hidden bg-slate-100">
+      {/* Background */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-slate-50 to-sky-100" />
 
-      {/* Main Container */}
-      <div className="relative z-10 flex h-full w-full overflow-hidden bg-white/70 backdrop-blur-2xl">
-        
-        {/* Mobile Backdrop Overlay */}
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
         <button
-          type="button"
           onClick={closeSidebar}
-          aria-label="Close sidebar overlay"
-          className={`fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out md:hidden ${
-            isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          }`}
+          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          aria-label="Close Sidebar"
         />
+      )}
 
-        {/* Sidebar Container */}
+      <div className="flex h-full w-full overflow-hidden">
+        {/* Sidebar */}
         <aside
-          aria-label="Sidebar Navigation"
-          className={`fixed inset-y-0 left-0 z-50 h-full w-80 shrink-0 transform bg-[#0B0F19]/95 backdrop-blur-xl border-r border-zinc-800/60 shadow-2xl transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
-            isSidebarOpen ? "translate-x-0 shadow-indigo-950/20" : "-translate-x-full"
-          }`}
+          className={`
+            fixed
+            top-0
+            left-0
+            z-40
+            h-full
+            w-80
+            max-w-[85vw]
+            bg-white
+            border-r
+            border-slate-200
+            transition-transform
+            duration-300
+            md:relative
+            md:translate-x-0
+            ${
+              isSidebarOpen
+                ? "translate-x-0"
+                : "-translate-x-full"
+            }
+          `}
         >
-          <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
+          <Sidebar
+            isOpen={isSidebarOpen}
+            onClose={closeSidebar}
+          />
         </aside>
 
-        {/* Chat Area Container */}
-        <main className="flex flex-1 flex-col h-full min-w-0 overflow-hidden bg-slate-100/50 backdrop-blur-md relative">
-          <ChatWindow onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+        {/* Chat */}
+        <main className="flex flex-1 min-w-0 flex-col overflow-hidden">
+          <ChatWindow
+            onToggleSidebar={toggleSidebar}
+            onOpenSidebar={openSidebar}
+          />
         </main>
-
       </div>
     </div>
   );
