@@ -1,3 +1,4 @@
+console.log("Node Version:", process.version);
 import dotenv from "dotenv";
 dotenv.config();
 
