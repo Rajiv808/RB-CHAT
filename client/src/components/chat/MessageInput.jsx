@@ -96,6 +96,10 @@ const MessageInput = () => {
 
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
+        // Re-focus on mobile screens so virtual keyboard stays active
+        if (window.innerWidth < 768) {
+          textareaRef.current.focus();
+        }
       }
     } catch (err) {
       console.error("Failed to send:", err);
@@ -105,7 +109,11 @@ const MessageInput = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    // Detect if keypress is from a mobile IME / Virtual Keyboard composition
+    if (e.isComposing || e.keyCode === 229) return;
+
+    // Only send on Enter on Desktop. On mobile (<768px), Enter inserts line breaks natively.
+    if (e.key === "Enter" && !e.shiftKey && window.innerWidth >= 768) {
       e.preventDefault();
       handleSend();
     }
@@ -120,18 +128,20 @@ const MessageInput = () => {
           {QUICK_EMOJIS.map((emoji) => (
             <button
               key={emoji}
+              type="button"
               onClick={() => {
                 setMessage((prev) => prev + emoji);
                 textareaRef.current?.focus();
               }}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl hover:bg-zinc-100 flex items-center justify-center text-lg sm:text-xl active:scale-125 transition-transform shrink-0"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl hover:bg-zinc-100 flex items-center justify-center text-lg sm:text-xl active:scale-125 transition-transform shrink-0 cursor-pointer"
             >
               {emoji}
             </button>
           ))}
           <button
+            type="button"
             onClick={() => setShowEmojiPicker(false)}
-            className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center ml-0.5 sm:ml-1 shrink-0"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center ml-0.5 sm:ml-1 shrink-0 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -164,6 +174,7 @@ const MessageInput = () => {
             />
 
             <button
+              type="button"
               onClick={() => {
                 URL.revokeObjectURL(preview);
                 setPreview("");
@@ -173,7 +184,7 @@ const MessageInput = () => {
                   fileInputRef.current.value = "";
                 }
               }}
-              className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-600 text-white rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shadow-md transition-colors"
+              className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-600 text-white rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shadow-md transition-colors cursor-pointer"
             >
               <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
@@ -185,8 +196,9 @@ const MessageInput = () => {
         
         {/* File Attachment Button */}
         <button
+          type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-white border border-zinc-200/80 hover:bg-zinc-100/80 text-zinc-500 hover:text-indigo-600 flex items-center justify-center shrink-0 active:scale-95 transition-all shadow-xs"
+          className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-white border border-zinc-200/80 hover:bg-zinc-100/80 text-zinc-500 hover:text-indigo-600 flex items-center justify-center shrink-0 active:scale-95 transition-all shadow-xs cursor-pointer"
           title="Attach File"
         >
           <Paperclip className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -194,8 +206,9 @@ const MessageInput = () => {
 
         {/* Emoji Button */}
         <button
+          type="button"
           onClick={() => setShowEmojiPicker((prev) => !prev)}
-          className={`h-10 w-10 sm:h-12 sm:w-12 rounded-2xl border transition-all flex items-center justify-center shrink-0 active:scale-95 shadow-xs ${
+          className={`h-10 w-10 sm:h-12 sm:w-12 rounded-2xl border transition-all flex items-center justify-center shrink-0 active:scale-95 shadow-xs cursor-pointer ${
             showEmojiPicker
               ? "border-indigo-500/40 text-indigo-600 bg-indigo-50/50"
               : "bg-white border-zinc-200/80 text-zinc-500 hover:text-amber-500 hover:bg-zinc-100/80"
@@ -214,15 +227,18 @@ const MessageInput = () => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder="Type your message..."
+            autoCapitalize="sentences"
+            autoCorrect="on"
             className="w-full resize-none rounded-2xl bg-zinc-100/80 focus:bg-white border border-zinc-200 px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-800 placeholder-zinc-400 outline-none focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 custom-scrollbar max-h-36 sm:max-h-56 block leading-relaxed transition-all shadow-xs"
           />
         </div>
 
         {/* Send Button */}
         <button
+          type="button"
           onClick={handleSend}
           disabled={(!message.trim() && !selectedImage) || isSending}
-          className={`h-10 w-10 sm:h-12 sm:w-12 rounded-2xl flex items-center justify-center shrink-0 active:scale-95 shadow-md transition-all ${
+          className={`h-10 w-10 sm:h-12 sm:w-12 rounded-2xl flex items-center justify-center shrink-0 active:scale-95 shadow-md transition-all cursor-pointer ${
             (message.trim() || selectedImage) && !isSending
               ? "bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-indigo-500/20 hover:brightness-110"
               : "bg-zinc-200/60 border border-zinc-200/80 text-zinc-400 cursor-not-allowed shadow-none"

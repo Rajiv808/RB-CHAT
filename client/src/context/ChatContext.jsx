@@ -58,7 +58,10 @@ const ChatProvider = ({ children }) => {
   // Fetch Messages
   // ==========================
   const fetchMessages = async (chatId) => {
-    if (!chatId) return;
+    if (!chatId) {
+      setMessages([]);
+      return;
+    }
 
     try {
       setMessageLoading(true);
@@ -76,13 +79,16 @@ const ChatProvider = ({ children }) => {
   };
 
   // ==========================
-  // Select Chat
+  // Select Chat (Fix: Allows passing null to clear selection on mobile)
   // ==========================
   const selectChat = async (chat) => {
-    if (!chat) return;
+    if (!chat) {
+      setSelectedChat(null);
+      setMessages([]);
+      return;
+    }
 
     setSelectedChat(chat);
-
     await fetchMessages(chat._id);
   };
 
@@ -113,12 +119,9 @@ const ChatProvider = ({ children }) => {
       });
 
       if (data.success) {
-        // DO NOT add message here.
-        // SocketContext will receive "messageReceived"
-        // and update the messages automatically.
-
-        setChats((prev) =>
-          prev.map((chat) =>
+        // Update latest message & bring this chat to top of the sidebar
+        setChats((prev) => {
+          const updatedChats = prev.map((chat) =>
             chat._id === selectedChat._id
               ? {
                   ...chat,
@@ -126,8 +129,13 @@ const ChatProvider = ({ children }) => {
                   updatedAt: new Date().toISOString(),
                 }
               : chat
-          )
-        );
+          );
+
+          // Re-sort: Most recently updated chat first
+          return updatedChats.sort(
+            (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+          );
+        });
 
         return data.data;
       }
