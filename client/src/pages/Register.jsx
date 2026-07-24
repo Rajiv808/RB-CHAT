@@ -1,75 +1,154 @@
-import bcrypt from "bcryptjs";
-import User from "../models/User.js";
-import generateToken from "../utils/GenerateToken.js";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { toast } from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
 
-// ================= Cookie Options =================
-const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-};
+const Register = () => {
+  const navigate = useNavigate();
+  const { register } = useAuth();
 
-// ================= Register User =================
-export const register = async (req, res) => {
-  try {
-    let { name, email, password } = req.body;
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-    // Validation
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required.",
-      });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.password) {
+      return toast.error("Please fill all fields");
     }
 
-    // Trim input
-    name = name.trim();
-    email = email.toLowerCase().trim();
-
-    // Check existing user
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return res.status(409).json({
-        success: false,
-        message: "Email already registered.",
-      });
+    if (formData.password.length < 6) {
+      return toast.error("Password must be at least 6 characters");
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+      setLoading(true);
 
-    // Create user
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
+      await register(formData);
 
-    // Generate JWT
-    const token = generateToken(user._id);
+      toast.success("Account created successfully!");
 
-    // Store JWT in cookie
-    res.cookie("token", token, cookieOptions);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1200);
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || "Registration failed"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return res.status(201).json({
-      success: true,
-      message: "Registration successful.",
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-      },
-    });
-  } catch (error) {
-    console.error("Register Error:", error);
+  return (
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl p-8">
+        <h1 className="text-3xl font-bold text-slate-800 text-center">
+          Create Account
+        </h1>
 
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error.",
-    });
-  }
+        <p className="text-slate-500 text-center mt-2 mb-8">
+          Join and start chatting instantly.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block mb-2 text-sm font-medium text-slate-700">
+              Full Name
+            </label>
+
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Rajiv Burman"
+              className="w-full h-12 rounded-xl border border-slate-300 px-4 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-2 text-sm font-medium text-slate-700">
+              Email
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              className="w-full h-12 rounded-xl border border-slate-300 px-4 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-2 text-sm font-medium text-slate-700">
+              Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                className="w-full h-12 rounded-xl border border-slate-300 px-4 pr-12 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full h-12 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-70 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} />
+                Creating...
+              </>
+            ) : (
+              "Create Account"
+            )}
+          </button>
+        </form>
+
+        <p className="text-center text-slate-600 mt-6">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-600 hover:underline font-semibold"
+          >
+            Sign In
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 };
+
+export default Register;
