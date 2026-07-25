@@ -86,15 +86,15 @@ const Register = () => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-tr from-sky-400 via-sky-200 to-indigo-300 relative overflow-hidden px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-sans text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
       
-      {/* Sky Aura Floating Glow Orbs */}
+      
       <div className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] bg-white/40 rounded-full blur-[140px]" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-cyan-300/40 rounded-full blur-[140px]" />
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-200/20 rounded-full blur-[160px]" />
 
-      {/* Fantabulous Glassmorphic Floating Card */}
+    
       <div className="w-full max-w-lg sm:max-w-xl bg-white/80 backdrop-blur-2xl border border-white/90 rounded-[2.5rem] p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(3,105,161,0.25)] relative z-10 transition-all duration-300">
         
-        {/* Top Header Badge & Logo */}
+      
         <div className="flex items-center justify-between mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 text-white shadow-lg shadow-sky-500/40">
             <CloudSun className="w-7 h-7" />
@@ -102,24 +102,24 @@ const Register = () => {
 
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-50/80 border border-sky-100 text-sky-700 text-xs font-bold tracking-wide shadow-sm backdrop-blur-md">
             <Sparkles className="w-4 h-4 text-sky-500 animate-pulse" />
-            <span>Sky Workspace</span>
+            <span>RB-CHAT</span>
           </div>
         </div>
 
-        {/* Hero Header */}
+       
         <div className="text-left mb-8">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">
             Create an <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-cyan-600 to-blue-600">Account.</span>
           </h1>
           <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
-            Join our platform and start collaborating instantly.
+            START CHATTING.
           </p>
         </div>
 
-        {/* Register Form */}
+   
         <form onSubmit={handleSubmit} className="space-y-6">
           
-          {/* Full Name Input */}
+        
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 ml-1">
               Full Name
@@ -131,13 +131,12 @@ const Register = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Rajiv Burman"
                 className="w-full bg-white/90 border border-sky-100 focus:border-sky-500 focus:ring-sky-500/20 rounded-2xl py-4 pl-12 pr-4 text-slate-900 placeholder-slate-400 text-sm sm:text-base focus:outline-none focus:ring-4 transition-all duration-200 shadow-sm"
               />
             </div>
           </div>
 
-          {/* Email Input */}
+   
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 ml-1">
               Email Address
@@ -155,7 +154,7 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Password Input */}
+         
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 ml-1">
               Password
@@ -181,7 +180,7 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Action Button */}
+          
           <button
             type="submit"
             disabled={loading}
@@ -198,7 +197,7 @@ const Register = () => {
           </button>
         </form>
 
-        {/* Footer Link */}
+    
         <div className="mt-10 text-center border-t border-sky-100 pt-8">
           <p className="text-sm sm:text-base text-slate-600 font-medium">
             Already have an account?{" "}

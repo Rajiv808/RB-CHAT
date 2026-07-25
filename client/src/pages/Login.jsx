@@ -46,13 +46,7 @@ const Login = () => {
           },
         });
 
-        navigate("/verify-otp", {
-          state: {
-            email: values.email,
-          },
-        });
-
-        return;
+       
       }
 
       toast.error(message || "Invalid email or password", {
@@ -74,15 +68,13 @@ const Login = () => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-tr from-sky-400 via-sky-200 to-indigo-300 relative overflow-hidden px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-sans text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
       
-      {/* Sky Aura Floating Glow Orbs */}
+  
       <div className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] bg-white/40 rounded-full blur-[140px]" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-cyan-300/40 rounded-full blur-[140px]" />
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-200/20 rounded-full blur-[160px]" />
 
-      {/* Fantabulous Glassmorphic Floating Card */}
       <div className="w-full max-w-lg sm:max-w-xl bg-white/80 backdrop-blur-2xl border border-white/90 rounded-[2.5rem] p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(3,105,161,0.25)] relative z-10 transition-all duration-300">
         
-        {/* Top Header Badge & Logo */}
         <div className="flex items-center justify-between mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 text-white shadow-lg shadow-sky-500/40">
             <CloudSun className="w-7 h-7" />
@@ -90,11 +82,11 @@ const Login = () => {
 
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-50/80 border border-sky-100 text-sky-700 text-xs font-bold tracking-wide shadow-sm backdrop-blur-md">
             <Sparkles className="w-4 h-4 text-sky-500 animate-pulse" />
-            <span>Sky Workspace</span>
+            <span>RB-CHAT</span>
           </div>
         </div>
 
-        {/* Hero Header */}
+        
         <div className="text-left mb-8">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">
             Welcome <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-cyan-600 to-blue-600">Back.</span>
@@ -104,10 +96,10 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Login Form */}
+        
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
           
-          {/* Email Input */}
+         
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 ml-1">
               Email Address
@@ -180,7 +172,7 @@ const Login = () => {
             )}
           </div>
 
-          {/* Action Button */}
+          
           <button
             type="submit"
             disabled={isSubmitting}
