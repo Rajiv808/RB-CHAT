@@ -129,7 +129,6 @@ const Register = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Rajiv Burman"
                 className="w-full bg-white/90 border border-sky-100 hover:border-sky-300 focus:border-sky-500 focus:ring-sky-500/20 rounded-2xl py-4 pl-12 pr-4 text-slate-900 placeholder-slate-400 text-sm sm:text-base focus:outline-none focus:ring-4 transition-all duration-200 shadow-sm"
               />
             </div>
