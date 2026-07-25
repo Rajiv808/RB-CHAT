@@ -54,18 +54,19 @@ const Register = () => {
 
       await register(formData);
 
-      toast.success("Account created successfully!", {
+      toast.success("Registered successfully! Now log in...", {
         style: {
           background: "#ffffff",
-          color: "#0f172a",
-          border: "1px solid #e2e8f0",
+          color: "#0369a1",
+          border: "1px solid #bae6fd",
           boxShadow: "0 10px 25px -5px rgba(2, 132, 199, 0.1)",
+          fontWeight: "700",
         },
       });
 
       setTimeout(() => {
         navigate("/login");
-      }, 1200);
+      }, 1500);
     } catch (err) {
       toast.error(
         err?.response?.data?.message || "Registration failed",
@@ -84,12 +85,12 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-tr from-sky-400 via-sky-200 to-indigo-300 relative overflow-hidden px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-sans text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-tr from-sky-400 via-sky-200 to-indigo-300 relative overflow-y-auto overflow-x-hidden px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-sans text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
       <div className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] bg-white/40 rounded-full blur-[140px]" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-cyan-300/40 rounded-full blur-[140px]" />
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-200/20 rounded-full blur-[160px]" />
 
-      <div className="w-full max-w-lg sm:max-w-xl bg-white/80 backdrop-blur-2xl border border-white/90 rounded-[2.5rem] p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(3,105,161,0.25)] relative z-10 transition-all duration-300">
+      <div className="w-full max-w-lg sm:max-w-xl bg-white/80 backdrop-blur-2xl border border-white/90 rounded-[2.5rem] p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(3,105,161,0.25)] relative z-10 transition-all duration-300 my-auto">
         
         <div className="text-center mb-8 pb-6 border-b border-sky-100">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 text-white shadow-lg shadow-sky-500/40 mb-4 hover:scale-105 transition-transform duration-300">
