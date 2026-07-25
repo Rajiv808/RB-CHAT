@@ -13,7 +13,7 @@ const ChatBody = () => {
   const containerRef = useRef(null);
   const bottomRef = useRef(null);
 
-  // Smooth container auto-scroll
+
   const scrollToBottom = useCallback((behavior = "smooth") => {
     if (containerRef.current) {
       containerRef.current.scrollTo({
@@ -23,7 +23,7 @@ const ChatBody = () => {
     }
   }, []);
 
-  // Auto-scroll on new messages or typing state (only if near bottom)
+  
   useEffect(() => {
     if (!containerRef.current) return;
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
@@ -34,7 +34,6 @@ const ChatBody = () => {
     }
   }, [messages, typing, scrollToBottom]);
 
-  // Handle scroll detection for the bottom action button
   const handleScroll = () => {
     if (!containerRef.current) return;
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
@@ -42,7 +41,7 @@ const ChatBody = () => {
     setShowScrollBottom(isFarFromBottom);
   };
 
-  // Group messages by calendar date
+
   const groupedMessages = useMemo(() => {
     const groups = [];
     messages.forEach((msg) => {
@@ -73,11 +72,11 @@ const ChatBody = () => {
     });
   };
 
-  // 1. Empty State - No Chat Selected
+
   if (!selectedChat) {
     return (
       <div className="h-full w-full flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-950 px-4 relative overflow-hidden select-none">
-        {/* Modern Vibrant Ambient Glows */}
+     
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 sm:w-112 h-80 sm:h-112 bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl pointer-events-none transform-gpu animate-pulse" />
 
         <div className="relative z-10 max-w-xs sm:max-w-md text-center p-6 sm:p-8 rounded-3xl bg-white/80 dark:bg-slate-900/80 border border-white/60 dark:border-slate-800 shadow-xl backdrop-blur-xl">
@@ -96,7 +95,7 @@ const ChatBody = () => {
     );
   }
 
-  // 2. Loading Skeleton State
+
   if (messageLoading) {
     return (
       <div className="h-full w-full overflow-hidden bg-slate-50/80 dark:bg-slate-950/80 px-3 sm:px-6 py-6 space-y-4">
@@ -121,11 +120,11 @@ const ChatBody = () => {
     );
   }
 
-  // 3. Main Message Feed
+ 
   return (
     <div className="relative h-full w-full min-h-0 flex-1 bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
       
-      {/* Scrollable Feed */}
+     
       <div
         ref={containerRef}
         onScroll={handleScroll}
@@ -139,7 +138,7 @@ const ChatBody = () => {
               </div>
               <h3 className="text-slate-800 dark:text-slate-100 text-base sm:text-lg font-bold">No messages yet</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
-                Break the ice! Send the first message below.
+                 Send the first message below.
               </p>
             </div>
           </div>
@@ -154,7 +153,7 @@ const ChatBody = () => {
                   </div>
                 </div>
 
-                {/* Message Bubbles */}
+               
                 {group.items.map((message, idx) => (
                   <MessageBubble
                     key={message._id || `${group.dateKey}-${idx}`}
@@ -164,7 +163,7 @@ const ChatBody = () => {
               </div>
             ))}
 
-            {/* Typing Indicator */}
+          
             {typing && (
               <div className="flex items-center gap-3 mt-2 sm:mt-3">
                 <div className="bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 rounded-2xl rounded-bl-xs px-4 py-3 shadow-md flex items-center gap-2">
@@ -189,7 +188,7 @@ const ChatBody = () => {
         )}
       </div>
 
-      {/* Floating Scroll to Bottom Button */}
+     
       {showScrollBottom && (
         <button
           type="button"

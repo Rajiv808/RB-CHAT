@@ -46,7 +46,7 @@ const MessageBubble = ({ message }) => {
           isOwnMessage ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        {/* Sender Avatar for Received Messages */}
+     
         {!isOwnMessage && (
           <Avatar
             src={sender?.avatar || ""}
@@ -56,7 +56,7 @@ const MessageBubble = ({ message }) => {
           />
         )}
 
-        {/* Message Container Bubble */}
+  
         <div
           className={`relative px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl border shadow-md min-w-[68px] transition-all duration-200 ${
             isOwnMessage
@@ -71,7 +71,7 @@ const MessageBubble = ({ message }) => {
             </p>
           )}
 
-          {/* Image Attachment Preview */}
+       
           {message.image && (
             <div className="relative overflow-hidden rounded-xl mb-2 group">
               <img
@@ -90,7 +90,7 @@ const MessageBubble = ({ message }) => {
             </p>
           )}
 
-          {/* Footer Metadata: Time + Read Indicator */}
+       
           <div
             className={`flex justify-end items-center gap-1 mt-1 text-[9px] sm:text-[10px] font-medium select-none ${
               isOwnMessage

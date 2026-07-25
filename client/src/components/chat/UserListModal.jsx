@@ -13,7 +13,7 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const { onlineUsers = [] } = useSocket();
 
-  // Fetch Users on Modal Open
+ 
   useEffect(() => {
     if (!open) return;
 
@@ -33,7 +33,7 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
     setSearchTerm("");
   }, [open]);
 
-  // Keyboard Close Shortcut
+ 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && open) onClose();
@@ -42,7 +42,7 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
 
-  // Filtered Users
+
   const filteredUsers = useMemo(() => {
     if (!searchTerm.trim()) return users;
     const query = searchTerm.toLowerCase();
@@ -58,7 +58,7 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
       {open && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 transform-gpu">
           
-          {/* Backdrop Blur Overlay */}
+         
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -67,7 +67,7 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
             className="fixed inset-0 bg-slate-950/60 backdrop-blur-md transition-opacity"
           />
 
-          {/* Modal Card Container */}
+       
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -75,7 +75,7 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
             transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
             className="relative w-full max-w-md bg-white/95 dark:bg-slate-900/95 border-t sm:border border-slate-200/80 dark:border-slate-800/80 rounded-t-3xl sm:rounded-3xl shadow-2xl backdrop-blur-2xl overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[80vh] z-10 select-none"
           >
-            {/* Modal Header */}
+          
             <div className="flex justify-between items-center px-4 sm:px-5 py-3.5 sm:py-4 border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
               <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
                 <div className="p-2 sm:p-2.5 rounded-2xl bg-gradient-to-tr from-violet-600 via-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-500/20 shrink-0">
@@ -100,7 +100,6 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
               </button>
             </div>
 
-            {/* Live Contact Search */}
             <div className="p-3 sm:p-4 border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-900/30 shrink-0">
               <SearchBar
                 value={searchTerm}
@@ -109,7 +108,7 @@ const UserListModal = ({ open, onClose, onSelectUser }) => {
               />
             </div>
 
-            {/* Users Feed List */}
+            
             <div className="p-2.5 sm:p-3 flex-1 overflow-y-auto space-y-1.5 custom-scrollbar min-h-[220px]">
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-12 sm:py-14 gap-3 text-slate-400">

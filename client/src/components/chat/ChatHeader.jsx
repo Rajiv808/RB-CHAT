@@ -9,11 +9,11 @@ const ChatHeader = ({ onToggleSidebar }) => {
   const { selectedChat } = useChat();
   const { onlineUsers = [] } = useSocket();
 
-  // No chat selected state
+
   if (!selectedChat) {
     return (
       <header className="h-16 w-full flex items-center gap-3 px-4 sm:px-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shrink-0 z-20 transition-colors">
-        {/* Mobile Sidebar Toggle */}
+      
         <button
           type="button"
           onClick={onToggleSidebar}
@@ -45,7 +45,7 @@ const ChatHeader = ({ onToggleSidebar }) => {
   return (
     <header className="h-16 w-full flex items-center justify-between px-3 sm:px-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shrink-0 z-20 transform-gpu transition-colors">
       <div className="flex items-center gap-3 min-w-0">
-        {/* Mobile Sidebar Toggle */}
+     
         <button
           type="button"
           onClick={onToggleSidebar}
@@ -55,7 +55,7 @@ const ChatHeader = ({ onToggleSidebar }) => {
           <Menu className="w-6 h-6" />
         </button>
 
-        {/* User / Group Avatar */}
+       
         <Avatar
           src={selectedChat.isGroupChat ? "" : otherUser?.avatar}
           name={chatName}
@@ -63,7 +63,7 @@ const ChatHeader = ({ onToggleSidebar }) => {
           size={42}
         />
 
-        {/* Header Details */}
+    
         <div className="min-w-0 flex flex-col justify-center">
           <h2 className="font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base leading-tight truncate">
             {chatName}
@@ -88,7 +88,6 @@ const ChatHeader = ({ onToggleSidebar }) => {
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
         <button
           type="button"

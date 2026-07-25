@@ -9,11 +9,7 @@ const MainLayout = () => {
   return (
     <div className="h-[100dvh] w-screen overflow-hidden flex bg-[#070b14] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
       
-      {/* 
-        SIDEBAR CONTAINER (MOBILE vs DESKTOP):
-        - Mobile: Shown IF no chat is selected (!selectedChat). Hidden IF chat is selected.
-        - Desktop (md:flex): ALWAYS shown on left side (w-80 / lg:w-96).
-      */}
+     
       <div
         className={`w-full md:w-80 lg:w-96 h-full flex-shrink-0 bg-[#070b14] border-r border-slate-800/80 ${
           !selectedChat ? "flex flex-col" : "hidden md:flex md:flex-col"
@@ -22,11 +18,7 @@ const MainLayout = () => {
         <Sidebar />
       </div>
 
-      {/* 
-        MAIN CHAT / WELCOME AREA:
-        - Mobile: Shown ONLY when a chat IS selected (selectedChat).
-        - Desktop (md:flex): ALWAYS shown on right side.
-      */}
+      
       <div
         className={`flex-1 h-full min-w-0 min-h-0 flex-col overflow-hidden relative bg-[#070b14] ${
           selectedChat ? "flex" : "hidden md:flex"

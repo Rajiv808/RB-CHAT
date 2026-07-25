@@ -50,7 +50,7 @@ const ChatListItem = ({
           : "bg-white/80 dark:bg-slate-900/80 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 border-slate-200/80 dark:border-slate-800/80 text-slate-800 dark:text-slate-100 shadow-xs backdrop-blur-md"
       }`}
     >
-      {/* Avatar Container */}
+
       <div className="relative shrink-0">
         <Avatar
           src={avatar}
@@ -71,9 +71,9 @@ const ChatListItem = ({
         )}
       </div>
 
-      {/* Main Info Wrapper */}
+     
       <div className="flex-1 min-w-0 flex flex-col justify-center">
-        {/* Top Row: Name + Time */}
+      
         <div className="flex justify-between items-center mb-1">
           <h3
             className={`font-bold text-xs sm:text-sm truncate pr-2 leading-tight ${
@@ -110,7 +110,7 @@ const ChatListItem = ({
             {latestMessage}
           </p>
 
-          {/* High-Vibrancy Unread Badge Indicator */}
+        
           {unreadCount > 0 && (
             <span
               className={`shrink-0 min-w-[20px] h-5 px-1.5 rounded-full flex items-center justify-center text-[10px] font-extrabold tracking-tight transition-transform group-hover:scale-105 ${

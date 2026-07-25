@@ -37,9 +37,7 @@ const Sidebar = ({ onClose }) => {
   const [search, setSearch] = useState("");
   const [showUsers, setShowUsers] = useState(false);
 
-  // ==========================
-  // Filter Chats
-  // ==========================
+ 
   const filteredChats = useMemo(() => {
     if (!search.trim()) return chats || [];
 
@@ -61,9 +59,6 @@ const Sidebar = ({ onClose }) => {
     });
   }, [search, chats, user]);
 
-  // ==========================
-  // Create / Open Chat
-  // ==========================
   const handleSelectUser = async (selectedUser) => {
     try {
       const { data } = await API.post("/chats", {
@@ -81,9 +76,7 @@ const Sidebar = ({ onClose }) => {
     }
   };
 
-  // ==========================
-  // Logout
-  // ==========================
+  
   const handleLogout = () => {
     logout();
     window.location.href = "/login";
@@ -96,11 +89,11 @@ const Sidebar = ({ onClose }) => {
         animate={{ opacity: 1 }}
         className="h-full w-full bg-slate-900/90 dark:bg-slate-950/90 backdrop-blur-xl flex flex-col border-r border-slate-800/80 relative z-20 overflow-hidden select-none transform-gpu"
       >
-        {/* ================= Header / User Profile Card ================= */}
+       
         <div className="p-3.5 sm:p-4 border-b border-slate-800/80 bg-slate-900/60 dark:bg-slate-900/80 backdrop-blur-md shrink-0">
           <div className="flex justify-between items-center mb-3 gap-2">
             
-            {/* User Info */}
+           
             <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
               <Avatar
                 src={user?.avatar}
@@ -122,10 +115,10 @@ const Sidebar = ({ onClose }) => {
               </div>
             </div>
 
-            {/* Header Action Icons */}
+          
             <div className="flex items-center gap-1 shrink-0">
               
-              {/* New Direct Chat Action */}
+             
               <button
                 onClick={() => setShowUsers(true)}
                 title="New Chat"
@@ -156,7 +149,7 @@ const Sidebar = ({ onClose }) => {
                 <LogOut className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </button>
 
-              {/* Mobile Close Button */}
+              
               {onClose && (
                 <button
                   onClick={onClose}
@@ -175,10 +168,10 @@ const Sidebar = ({ onClose }) => {
           </div>
         </div>
 
-        {/* ================= Conversations Feed ================= */}
+       
         <div className="flex-1 overflow-y-auto p-2.5 space-y-1.5 custom-scrollbar min-h-0">
           {chatLoading ? (
-            /* Skeleton Loader */
+        
             <div className="space-y-2.5 p-1">
               {[...Array(6)].map((_, i) => (
                 <div
@@ -194,7 +187,7 @@ const Sidebar = ({ onClose }) => {
               ))}
             </div>
           ) : filteredChats.length === 0 ? (
-            /* Empty State */
+        
             <div className="flex flex-col items-center justify-center text-center py-12 px-4">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600/20 to-indigo-600/20 border border-violet-500/30 flex items-center justify-center text-violet-400 mb-3.5 shadow-inner">
                 <MessageSquarePlus className="w-6 h-6" />
@@ -209,7 +202,7 @@ const Sidebar = ({ onClose }) => {
               </p>
             </div>
           ) : (
-            /* Active Chat List */
+        
             filteredChats.map((chat) => (
               <ChatListItem
                 key={chat._id}
@@ -226,7 +219,7 @@ const Sidebar = ({ onClose }) => {
         </div>
       </motion.aside>
 
-      {/* User Selection Modal */}
+  
       <UserListModal
         open={showUsers}
         onClose={() => setShowUsers(false)}

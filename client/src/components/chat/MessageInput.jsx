@@ -117,7 +117,7 @@ const MessageInput = () => {
   return (
     <div className="w-full border-t border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 sm:p-4 shrink-0 relative z-30 pb-[max(0.75rem,env(safe-area-inset-bottom))] transform-gpu transition-colors">
       
-      {/* Quick Emoji Popover */}
+     
       {showEmojiPicker && (
         <div className="absolute bottom-full left-2 sm:left-4 mb-3 p-2 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-2xl backdrop-blur-xl flex items-center gap-1.5 z-50 max-w-[calc(100vw-1rem)] overflow-x-auto">
           {QUICK_EMOJIS.map((emoji) => (
@@ -143,7 +143,7 @@ const MessageInput = () => {
         </div>
       )}
 
-      {/* Hidden File Input */}
+   
       <input
         type="file"
         ref={fileInputRef}
@@ -158,7 +158,7 @@ const MessageInput = () => {
         }}
       />
 
-      {/* Image Preview Container */}
+   
       {preview && (
         <div className="max-w-4xl mx-auto mb-3">
           <div className="relative inline-block">
@@ -189,7 +189,7 @@ const MessageInput = () => {
 
       <div className="flex items-end gap-2 sm:gap-3 max-w-4xl mx-auto">
         
-        {/* Attachment Action Button */}
+   
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
@@ -213,7 +213,7 @@ const MessageInput = () => {
           <Smile className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
-        {/* Text Field Input Container */}
+  
         <div className="flex-1 relative min-w-0">
           <textarea
             ref={textareaRef}
