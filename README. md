@@ -1,0 +1,30 @@
+# RB-CHAT
+
+A modern real-time chat application built with the MERN Stack.
+
+## Features
+- Real-time messaging
+- JWT Authentication
+- Online/Offline status
+- Typing indicators
+- Image & file sharing
+- Responsive design
+
+## Tech Stack
+- React + Vite
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Socket.IO
+- Tailwind CSS
+- Cloudinary
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies
+3. Configure the .env file
+4. Run the frontend and backend
+
+## Author
+Rajiv Burman
